@@ -25,6 +25,9 @@ const QUOTES = [
   "Keep going — you're closer than you think.",
 ];
 
+const SHOW_MS = 5000;
+const HIDE_MS = 20000;
+
 function pickNext(prevIndex: number): number {
   if (QUOTES.length <= 1) return 0;
   let next = Math.floor(Math.random() * QUOTES.length);
@@ -37,7 +40,7 @@ function pickNext(prevIndex: number): number {
 export function WelcomeMessage() {
   const [name, setName] = useState<string | null>(null);
   const [quoteIndex, setQuoteIndex] = useState<number | null>(null);
-  const [fading, setFading] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     fetch("/api/profile")
@@ -46,14 +49,27 @@ export function WelcomeMessage() {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setFading(true);
-      setTimeout(() => {
-        setQuoteIndex((prev) => pickNext(prev ?? -1));
-        setFading(false);
-      }, 200);
-    }, 20000);
-    return () => clearInterval(interval);
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout>;
+
+    function showPhase() {
+      setVisible(true);
+      timer = setTimeout(() => {
+        setVisible(false);
+        timer = setTimeout(() => {
+          if (cancelled) return;
+          setQuoteIndex((prev) => pickNext(prev ?? -1));
+          showPhase();
+        }, HIDE_MS);
+      }, SHOW_MS);
+    }
+
+    showPhase();
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
   }, []);
 
   if (!name) return null;
@@ -61,19 +77,17 @@ export function WelcomeMessage() {
   const text = quoteIndex === null ? `Welcome, ${name}` : QUOTES[quoteIndex];
 
   return (
-    <div className="mb-4 flex w-fit items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5 text-xs text-muted">
+    <div
+      className={`mb-4 flex w-fit items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5 text-xs text-muted transition-opacity duration-500 ${
+        visible ? "opacity-60" : "opacity-0"
+      }`}
+    >
       <span className="flex shrink-0 items-center gap-0.5" aria-hidden>
         <span className="h-1 w-1 animate-bounce rounded-full bg-muted [animation-delay:0ms]" />
         <span className="h-1 w-1 animate-bounce rounded-full bg-muted [animation-delay:150ms]" />
         <span className="h-1 w-1 animate-bounce rounded-full bg-muted [animation-delay:300ms]" />
       </span>
-      <span
-        className={`transition-opacity duration-200 ${
-          fading ? "opacity-0" : "opacity-100"
-        }`}
-      >
-        {text}
-      </span>
+      <span>{text}</span>
     </div>
   );
 }
