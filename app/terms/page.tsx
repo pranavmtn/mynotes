@@ -92,10 +92,10 @@ export default function TermsOfService() {
         <p>
           Questions about these terms? Reach us at{" "}
           <a
-            href="mailto:hello@blockundo.com"
+            href="mailto:hello@spootin.com"
             className="text-foreground underline"
           >
-            hello@blockundo.com
+            hello@spootin.com
           </a>
           .
         </p>
