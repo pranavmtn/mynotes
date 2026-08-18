@@ -1,6 +1,5 @@
 "use client";
 
-import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { Idea } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
@@ -8,15 +7,12 @@ import { formatDate } from "@/lib/utils";
 export function IdeaCard({
   idea,
   onUpdateTitle,
-  onDelete,
 }: {
   idea: Idea;
   onUpdateTitle: (title: string) => void;
-  onDelete: () => void;
 }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(idea.title);
-  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   function commitEdit() {
     setEditing(false);
@@ -67,36 +63,7 @@ export function IdeaCard({
           </button>
         )}
       </div>
-      <div className="flex shrink-0 items-center gap-3">
-        <span className="text-xs text-muted">{formatDate(idea.createdAt)}</span>
-        {confirmingDelete ? (
-          <div className="flex items-center gap-2 text-xs">
-            <button
-              type="button"
-              onClick={onDelete}
-              className="text-foreground underline cursor-pointer"
-            >
-              Delete
-            </button>
-            <button
-              type="button"
-              onClick={() => setConfirmingDelete(false)}
-              className="text-muted cursor-pointer"
-            >
-              Cancel
-            </button>
-          </div>
-        ) : (
-          <button
-            type="button"
-            aria-label="Delete idea"
-            onClick={() => setConfirmingDelete(true)}
-            className="text-muted opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100 cursor-pointer"
-          >
-            <Trash2 size={14} />
-          </button>
-        )}
-      </div>
+      <span className="shrink-0 text-xs text-muted">{formatDate(idea.createdAt)}</span>
     </div>
   );
 }

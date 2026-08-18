@@ -7,6 +7,7 @@ import type { Idea } from "@/lib/types";
 
 export function PlanTab({
   ideas,
+  onDeleteIdea,
   onAddPlan,
   onUpdatePlanTitle,
   onUpdatePlanNotes,
@@ -17,6 +18,7 @@ export function PlanTab({
   onDeleteStep,
 }: {
   ideas: Idea[];
+  onDeleteIdea: (ideaId: string) => void;
   onAddPlan: (ideaId: string, title: string) => void;
   onUpdatePlanTitle: (ideaId: string, planId: string, title: string) => void;
   onUpdatePlanNotes: (ideaId: string, planId: string, notes: string) => void;
@@ -34,6 +36,10 @@ export function PlanTab({
       <IdeaDetail
         idea={openIdea}
         onBack={() => setOpenIdeaId(null)}
+        onDeleteIdea={() => {
+          onDeleteIdea(openIdea.id);
+          setOpenIdeaId(null);
+        }}
         onAddPlan={(title) => onAddPlan(openIdea.id, title)}
         onUpdatePlanTitle={(planId, title) => onUpdatePlanTitle(openIdea.id, planId, title)}
         onUpdatePlanNotes={(planId, notes) => onUpdatePlanNotes(openIdea.id, planId, notes)}

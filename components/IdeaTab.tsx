@@ -8,12 +8,10 @@ export function IdeaTab({
   ideas,
   onAdd,
   onUpdateTitle,
-  onDelete,
 }: {
   ideas: Idea[];
   onAdd: (title: string) => void;
   onUpdateTitle: (ideaId: string, title: string) => void;
-  onDelete: (ideaId: string) => void;
 }) {
   return (
     <div className="flex flex-col gap-6">
@@ -32,7 +30,6 @@ export function IdeaTab({
               key={idea.id}
               idea={idea}
               onUpdateTitle={(title) => onUpdateTitle(idea.id, title)}
-              onDelete={() => onDelete(idea.id)}
             />
           ))}
         </div>

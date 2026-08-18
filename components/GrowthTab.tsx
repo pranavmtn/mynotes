@@ -1,6 +1,6 @@
 "use client";
 
-import { Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import type { Idea } from "@/lib/types";
 import { ideaProgress, planProgress } from "@/lib/utils";
@@ -50,6 +50,20 @@ export function GrowthTab({
             </div>
             <ProgressIndicator percent={progress} color={idea.color} />
           </div>
+
+          {complete && (
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-background px-4 py-2.5">
+              <span className="text-xs font-medium text-foreground">Accomplished</span>
+              <button
+                type="button"
+                title="Coming soon"
+                className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-foreground/40 cursor-pointer"
+              >
+                Let&apos;s Execute
+                <ArrowRight size={12} />
+              </button>
+            </div>
+          )}
 
           <div className="mt-5 flex flex-col gap-5">
             {idea.plans.map((plan) => (

@@ -54,11 +54,11 @@ function AppContent() {
             ideas={ideas}
             onAdd={addIdea}
             onUpdateTitle={updateIdeaTitle}
-            onDelete={deleteIdea}
           />
         ) : tab === "plan" ? (
           <PlanTab
             ideas={ideas}
+            onDeleteIdea={deleteIdea}
             onAddPlan={addPlan}
             onUpdatePlanTitle={(ideaId, planId, title) =>
               updatePlan(ideaId, planId, { title })

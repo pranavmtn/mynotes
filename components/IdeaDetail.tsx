@@ -2,6 +2,7 @@
 
 import { ArrowLeft, ChevronDown, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { KillIdeaModal } from "@/components/KillIdeaModal";
 import { PlanDetail } from "@/components/PlanDetail";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import type { Idea } from "@/lib/types";
@@ -10,6 +11,7 @@ import { ideaProgress, planProgress } from "@/lib/utils";
 export function IdeaDetail({
   idea,
   onBack,
+  onDeleteIdea,
   onAddPlan,
   onUpdatePlanTitle,
   onUpdatePlanNotes,
@@ -21,6 +23,7 @@ export function IdeaDetail({
 }: {
   idea: Idea;
   onBack: () => void;
+  onDeleteIdea: () => void;
   onAddPlan: (title: string) => void;
   onUpdatePlanTitle: (planId: string, title: string) => void;
   onUpdatePlanNotes: (planId: string, notes: string) => void;
@@ -36,6 +39,7 @@ export function IdeaDetail({
   const [confirmingDeletePlanId, setConfirmingDeletePlanId] = useState<string | null>(null);
   const [editingPlanTitleId, setEditingPlanTitleId] = useState<string | null>(null);
   const [planTitleDraft, setPlanTitleDraft] = useState("");
+  const [killModalOpen, setKillModalOpen] = useState(false);
 
   function commitPlanTitle(planId: string, originalTitle: string) {
     setEditingPlanTitleId(null);
@@ -226,6 +230,27 @@ export function IdeaDetail({
           </button>
         )}
       </div>
+
+      <div className="mt-4 border-t border-border pt-4">
+        <button
+          type="button"
+          onClick={() => setKillModalOpen(true)}
+          className="text-xs text-muted transition-colors hover:text-red-600 cursor-pointer"
+        >
+          Kill this idea
+        </button>
+      </div>
+
+      {killModalOpen && (
+        <KillIdeaModal
+          ideaTitle={idea.title}
+          onCancel={() => setKillModalOpen(false)}
+          onConfirm={() => {
+            setKillModalOpen(false);
+            onDeleteIdea();
+          }}
+        />
+      )}
     </div>
   );
 }
