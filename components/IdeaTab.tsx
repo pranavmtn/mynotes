@@ -34,6 +34,15 @@ export function IdeaTab({
           ))}
         </div>
       )}
+
+      <div className="mt-16 flex flex-col items-center gap-2 pb-8 text-center">
+        <p className="text-2xl font-semibold text-[#1a1a1a]">
+          An idea is a spark.
+        </p>
+        <p className="font-[family-name:var(--font-playfair)] text-2xl italic text-[#1a1a1a]">
+          Ignite it. Fuel it. Fire it.
+        </p>
+      </div>
     </div>
   );
 }
