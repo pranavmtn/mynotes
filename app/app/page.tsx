@@ -6,6 +6,7 @@ import { GrowthTab } from "@/components/GrowthTab";
 import { IdeaTab } from "@/components/IdeaTab";
 import { Navigation } from "@/components/Navigation";
 import { PlanTab } from "@/components/PlanTab";
+import { WelcomeMessage } from "@/components/WelcomeMessage";
 import { useIdeas } from "@/hooks/useIdeas";
 import type { Tab } from "@/lib/types";
 
@@ -45,6 +46,7 @@ function AppContent() {
     <div className="flex min-h-screen flex-col">
       <Navigation active={tab} onChange={setTab} />
       <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-8 sm:px-8">
+        <WelcomeMessage />
         {!loaded ? (
           <p className="pt-16 text-center text-sm text-muted">Loading...</p>
         ) : tab === "idea" ? (
