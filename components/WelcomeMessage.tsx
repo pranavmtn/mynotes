@@ -52,7 +52,7 @@ export function WelcomeMessage() {
         setQuoteIndex((prev) => pickNext(prev ?? -1));
         setFading(false);
       }, 200);
-    }, 5000);
+    }, 20000);
     return () => clearInterval(interval);
   }, []);
 

@@ -35,11 +35,11 @@ export function IdeaTab({
         </div>
       )}
 
-      <div className="mt-16 flex flex-col items-center gap-2 pb-8 text-center">
-        <p className="text-2xl font-semibold text-[#1a1a1a]">
+      <div className="mt-16 flex flex-col items-center gap-3 pb-8 text-center pointer-events-none select-none">
+        <p className="text-3xl font-semibold tracking-widest text-[#1a1a1a]/10">
           An idea is a spark.
         </p>
-        <p className="font-[family-name:var(--font-playfair)] text-2xl italic text-[#1a1a1a]">
+        <p className="font-[family-name:var(--font-playfair)] text-3xl italic tracking-widest text-[#1a1a1a]/10">
           Ignite it. Fuel it. Fire it.
         </p>
       </div>
