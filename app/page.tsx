@@ -26,7 +26,7 @@ export default async function Home(props: PageProps<"/">) {
     <div className="flex min-h-screen flex-col items-center justify-center px-6 py-16 sm:px-8">
       <div className="flex w-full max-w-md flex-col items-center gap-10 text-center">
         <div className="flex flex-col items-center gap-3">
-          <h1 className="text-2xl font-medium text-foreground">mynotes</h1>
+          <h1 className="text-2xl font-medium text-foreground">spootin</h1>
           <p className="text-sm text-muted">
             A minimal, distraction-free way to take an idea from a passing
             thought to a finished plan.
