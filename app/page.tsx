@@ -1,4 +1,5 @@
 import { Lightbulb, ListChecks, TrendingUp } from "lucide-react";
+import { Footer } from "@/components/Footer";
 
 const FEATURES = [
   {
@@ -23,48 +24,51 @@ export default async function Home(props: PageProps<"/">) {
   const error = typeof searchParams.error === "string" ? searchParams.error : null;
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-6 py-16 sm:px-8">
-      <div className="flex w-full max-w-md flex-col items-center gap-10 text-center">
-        <div className="flex flex-col items-center gap-3">
-          <h1 className="text-2xl font-medium text-foreground">spootin</h1>
-          <p className="text-sm text-muted">
-            A minimal, distraction-free way to take an idea from a passing
-            thought to a finished plan.
-          </p>
-        </div>
-
-        <div className="flex w-full flex-col items-center gap-3">
-          <a
-            href="/api/auth/google"
-            className="flex w-full items-center justify-center gap-3 rounded-xl border border-border bg-surface px-4 py-3 text-sm font-medium text-foreground transition-colors hover:border-foreground/40"
-          >
-            <GoogleIcon />
-            Continue with Google
-          </a>
-          {error && (
-            <p className="text-xs text-muted">
-              Sign-in didn&apos;t go through. Please try again.
+    <div className="flex min-h-screen flex-col">
+      <div className="flex flex-1 flex-col items-center justify-center px-6 py-16 sm:px-8">
+        <div className="flex w-full max-w-md flex-col items-center gap-10 text-center">
+          <div className="flex flex-col items-center gap-3">
+            <h1 className="text-2xl font-medium text-foreground">spootin</h1>
+            <p className="text-sm text-muted">
+              A minimal, distraction-free way to take an idea from a passing
+              thought to a finished plan.
             </p>
-          )}
-        </div>
+          </div>
 
-        <div className="flex w-full flex-col gap-4">
-          {FEATURES.map(({ icon: Icon, title, body }) => (
-            <div
-              key={title}
-              className="flex items-start gap-3 rounded-xl border border-border bg-surface p-4 text-left"
+          <div className="flex w-full flex-col items-center gap-3">
+            <a
+              href="/api/auth/google"
+              className="flex w-full items-center justify-center gap-3 rounded-xl border border-border bg-surface px-4 py-3 text-sm font-medium text-foreground transition-colors hover:border-foreground/40"
             >
-              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border text-muted">
-                <Icon size={14} />
-              </span>
-              <div>
-                <p className="text-sm font-medium text-foreground">{title}</p>
-                <p className="mt-0.5 text-sm text-muted">{body}</p>
+              <GoogleIcon />
+              Continue with Google
+            </a>
+            {error && (
+              <p className="text-xs text-muted">
+                Sign-in didn&apos;t go through. Please try again.
+              </p>
+            )}
+          </div>
+
+          <div className="flex w-full flex-col gap-4">
+            {FEATURES.map(({ icon: Icon, title, body }) => (
+              <div
+                key={title}
+                className="flex items-start gap-3 rounded-xl border border-border bg-surface p-4 text-left"
+              >
+                <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border text-muted">
+                  <Icon size={14} />
+                </span>
+                <div>
+                  <p className="text-sm font-medium text-foreground">{title}</p>
+                  <p className="mt-0.5 text-sm text-muted">{body}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
