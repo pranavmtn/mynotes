@@ -24,7 +24,10 @@ export function GrowthTab({
 
   return (
     <div className="flex flex-col items-center gap-6">
-      {activeIdeas.map((idea) => (
+      {activeIdeas.map((idea) => {
+        const progress = ideaProgress(idea);
+        const complete = progress === 100;
+        return (
         <div
           key={idea.id}
           className="w-full max-w-[1100px] rounded-2xl border bg-surface px-6 py-6 sm:w-4/5 sm:px-8"
@@ -37,9 +40,15 @@ export function GrowthTab({
                 style={{ backgroundColor: idea.color }}
                 aria-hidden
               />
-              <h2 className="text-base font-medium text-foreground">{idea.title}</h2>
+              <h2
+                className={`text-base font-medium ${
+                  complete ? "text-muted line-through" : "text-foreground"
+                }`}
+              >
+                {idea.title}
+              </h2>
             </div>
-            <ProgressIndicator percent={ideaProgress(idea)} color={idea.color} />
+            <ProgressIndicator percent={progress} color={idea.color} />
           </div>
 
           <div className="mt-5 flex flex-col gap-5">
@@ -96,7 +105,8 @@ export function GrowthTab({
             ))}
           </div>
         </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

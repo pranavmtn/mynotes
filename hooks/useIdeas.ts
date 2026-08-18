@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { dataStore } from "@/lib/storage";
 import type { Idea, Plan, Step } from "@/lib/types";
 import { generateId, nextIdeaColor, nowISO } from "@/lib/utils";
@@ -8,15 +8,30 @@ import { generateId, nextIdeaColor, nowISO } from "@/lib/utils";
 export function useIdeas() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const skipNextSave = useRef(true);
+  const saveQueue = useRef(Promise.resolve());
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time hydration from localStorage, which is unavailable during SSR
-    setIdeas(dataStore.load());
-    setLoaded(true);
+    let cancelled = false;
+    dataStore.load().then((loadedIdeas) => {
+      if (cancelled) return;
+      setIdeas(loadedIdeas);
+      setLoaded(true);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
-    if (loaded) dataStore.save(ideas);
+    if (!loaded) return;
+    if (skipNextSave.current) {
+      skipNextSave.current = false;
+      return;
+    }
+    // chain saves so concurrent edits reach the server in the order they happened,
+    // instead of racing as independent requests that could resolve out of order
+    saveQueue.current = saveQueue.current.then(() => dataStore.save(ideas));
   }, [ideas, loaded]);
 
   const addIdea = useCallback((title: string) => {

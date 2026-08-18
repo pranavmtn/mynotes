@@ -1,34 +1,32 @@
 import type { Idea } from "./types";
 
-const STORAGE_KEY = "idea-plan-growth:ideas";
-
 export interface DataStore {
-  load(): Idea[];
-  save(ideas: Idea[]): void;
+  load(): Promise<Idea[]>;
+  save(ideas: Idea[]): Promise<void>;
 }
 
-class LocalStorageStore implements DataStore {
-  load(): Idea[] {
-    if (typeof window === "undefined") return [];
+class RemoteStore implements DataStore {
+  async load(): Promise<Idea[]> {
     try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (!raw) return [];
-      const parsed = JSON.parse(raw);
-      if (!Array.isArray(parsed)) return [];
-      return parsed as Idea[];
+      const res = await fetch("/api/ideas", { cache: "no-store" });
+      if (!res.ok) return [];
+      return (await res.json()) as Idea[];
     } catch {
       return [];
     }
   }
 
-  save(ideas: Idea[]): void {
-    if (typeof window === "undefined") return;
+  async save(ideas: Idea[]): Promise<void> {
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(ideas));
+      await fetch("/api/ideas", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(ideas),
+      });
     } catch {
-      // ignore write failures (e.g. storage quota, private mode)
+      // ignore network failures; local state remains the source of truth for this session
     }
   }
 }
 
-export const dataStore: DataStore = new LocalStorageStore();
+export const dataStore: DataStore = new RemoteStore();
