@@ -10,7 +10,7 @@ import {
   sortByLastModified,
 } from "@/lib/utils";
 
-export function GrowthTab({
+export function TimelineTab({
   ideas,
   onToggleStep,
 }: {

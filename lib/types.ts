@@ -22,4 +22,4 @@ export type Idea = {
   plans: Plan[];
 };
 
-export type Tab = "idea" | "plan" | "growth";
+export type Tab = "idea" | "plan" | "timeline";

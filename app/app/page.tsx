@@ -2,16 +2,16 @@
 
 import { Suspense, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { GrowthTab } from "@/components/GrowthTab";
 import { IdeaTab } from "@/components/IdeaTab";
 import { Navigation } from "@/components/Navigation";
 import { PlanTab } from "@/components/PlanTab";
+import { TimelineTab } from "@/components/TimelineTab";
 import { WelcomeMessage } from "@/components/WelcomeMessage";
 import { useIdeas } from "@/hooks/useIdeas";
 import type { Tab } from "@/lib/types";
 
 function isTab(value: string | null): value is Tab {
-  return value === "idea" || value === "plan" || value === "growth";
+  return value === "idea" || value === "plan" || value === "timeline";
 }
 
 function AppContent() {
@@ -80,7 +80,7 @@ function AppContent() {
             onDeleteStep={deleteStep}
           />
         ) : (
-          <GrowthTab
+          <TimelineTab
             ideas={ideas}
             onToggleStep={(ideaId, planId, stepId) => {
               const idea = ideas.find((i) => i.id === ideaId);

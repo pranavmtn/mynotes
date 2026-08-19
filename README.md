@@ -1,4 +1,4 @@
-# Idea → Plan → Growth
+# Idea → Plan → Timeline
 
 A minimal, distraction-free tool for capturing ideas, turning them into
 actionable plans, and tracking execution progress.

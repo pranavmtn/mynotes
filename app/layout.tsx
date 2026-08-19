@@ -14,7 +14,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Idea → Plan → Growth",
+  title: "Idea → Plan → Timeline",
   description: "A minimal personal idea management tool.",
 };
 

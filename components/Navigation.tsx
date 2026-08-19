@@ -6,7 +6,7 @@ import type { Tab } from "@/lib/types";
 const TABS: { id: Tab; label: string }[] = [
   { id: "idea", label: "IDEA" },
   { id: "plan", label: "PLAN" },
-  { id: "growth", label: "GROWTH" },
+  { id: "timeline", label: "TIMELINE" },
 ];
 
 export function Navigation({
