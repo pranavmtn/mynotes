@@ -1,10 +1,9 @@
-import { formatRelativeModified, isRelativeDayFormat } from "@/lib/utils";
+import { formatRelativeModified } from "@/lib/utils";
 
 export function ModifiedLabel({ updatedAt }: { updatedAt: string }) {
-  const value = formatRelativeModified(updatedAt);
   return (
-    <span className="text-xs text-muted">
-      Modified {isRelativeDayFormat(value) ? <em className="italic">{value}</em> : value}
-    </span>
+    <em className="text-xs italic text-muted tabular-nums">
+      {formatRelativeModified(updatedAt)}
+    </em>
   );
 }

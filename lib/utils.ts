@@ -50,20 +50,12 @@ export function formatDate(iso: string): string {
 export function formatRelativeModified(iso: string): string {
   const date = new Date(iso);
   const now = new Date();
-  const diffMinutes = (now.getTime() - date.getTime()) / 60000;
-  if (diffMinutes < 1) return "just now";
-
   const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
-  const dayDiff = Math.round(
-    (startOfDay(now).getTime() - startOfDay(date).getTime()) / 86400000
+  const dayDiff = Math.max(
+    0,
+    Math.round((startOfDay(now).getTime() - startOfDay(date).getTime()) / 86400000)
   );
-  if (dayDiff === 0) return "-0d";
-  if (dayDiff === 1) return "-1d";
-  return formatDate(iso);
-}
-
-export function isRelativeDayFormat(text: string): boolean {
-  return /^-\d+d$/.test(text);
+  return `${dayDiff}d`;
 }
 
 export function sortByLastModified<T extends { updatedAt: string }>(items: T[]): T[] {
