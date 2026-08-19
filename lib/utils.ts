@@ -47,6 +47,27 @@ export function formatDate(iso: string): string {
   });
 }
 
+export function formatRelativeModified(iso: string): string {
+  const date = new Date(iso);
+  const now = new Date();
+  const diffMinutes = (now.getTime() - date.getTime()) / 60000;
+  if (diffMinutes < 1) return "just now";
+
+  const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const dayDiff = Math.round(
+    (startOfDay(now).getTime() - startOfDay(date).getTime()) / 86400000
+  );
+  if (dayDiff === 0) return "today";
+  if (dayDiff === 1) return "yesterday";
+  return formatDate(iso);
+}
+
+export function sortByLastModified<T extends { updatedAt: string }>(items: T[]): T[] {
+  return [...items].sort(
+    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+  );
+}
+
 export function getInitials(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean);
   if (parts.length === 0) return "?";

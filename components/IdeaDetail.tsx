@@ -1,12 +1,17 @@
 "use client";
 
 import { ArrowLeft, ChevronDown, Plus, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { KillIdeaModal } from "@/components/KillIdeaModal";
 import { PlanDetail } from "@/components/PlanDetail";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import type { Idea } from "@/lib/types";
-import { ideaProgress, planProgress } from "@/lib/utils";
+import {
+  formatRelativeModified,
+  ideaProgress,
+  planProgress,
+  sortByLastModified,
+} from "@/lib/utils";
 
 export function IdeaDetail({
   idea,
@@ -40,6 +45,9 @@ export function IdeaDetail({
   const [editingPlanTitleId, setEditingPlanTitleId] = useState<string | null>(null);
   const [planTitleDraft, setPlanTitleDraft] = useState("");
   const [killModalOpen, setKillModalOpen] = useState(false);
+  const newPlanInputRef = useRef<HTMLInputElement>(null);
+
+  const sortedPlans = sortByLastModified(idea.plans);
 
   function commitPlanTitle(planId: string, originalTitle: string) {
     setEditingPlanTitleId(null);
@@ -54,7 +62,8 @@ export function IdeaDetail({
     if (!trimmed) return;
     onAddPlan(trimmed);
     setNewPlanTitle("");
-    setAddingPlan(false);
+    // stay in add-mode so Enter keeps creating the next plan without extra clicks
+    newPlanInputRef.current?.focus();
   }
 
   return (
@@ -88,7 +97,7 @@ export function IdeaDetail({
         )}
 
         <div className="flex flex-col gap-2">
-          {idea.plans.map((plan) => {
+          {sortedPlans.map((plan) => {
             const expanded = expandedPlanId === plan.id;
             const progress = planProgress(plan);
             return (
@@ -96,7 +105,7 @@ export function IdeaDetail({
                 key={plan.id}
                 className="rounded-xl border border-border bg-surface transition-colors"
               >
-                <div className="flex items-center justify-between gap-3 px-4 py-3">
+                <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
                   <div className="flex min-w-0 flex-1 items-center gap-2">
                     <button
                       type="button"
@@ -139,7 +148,10 @@ export function IdeaDetail({
                       </button>
                     )}
                   </div>
-                  <div className="flex shrink-0 items-center gap-3">
+                  <div className="flex shrink-0 flex-wrap items-center gap-3">
+                    <span className="text-xs text-muted">
+                      Modified {formatRelativeModified(plan.updatedAt)}
+                    </span>
                     <span className="text-xs text-muted tabular-nums">
                       {plan.steps.filter((s) => s.completed).length} / {plan.steps.length}
                     </span>
@@ -198,6 +210,7 @@ export function IdeaDetail({
           <div className="flex items-center gap-3 rounded-xl border border-border bg-surface px-4 py-3">
             <Plus size={14} className="shrink-0 text-muted" aria-hidden />
             <input
+              ref={newPlanInputRef}
               autoFocus
               value={newPlanTitle}
               onChange={(e) => setNewPlanTitle(e.target.value)}

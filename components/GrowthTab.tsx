@@ -3,7 +3,12 @@
 import { ArrowRight, Check } from "lucide-react";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import type { Idea } from "@/lib/types";
-import { ideaProgress, planProgress } from "@/lib/utils";
+import {
+  formatRelativeModified,
+  ideaProgress,
+  planProgress,
+  sortByLastModified,
+} from "@/lib/utils";
 
 export function GrowthTab({
   ideas,
@@ -66,15 +71,20 @@ export function GrowthTab({
           )}
 
           <div className="mt-5 flex flex-col gap-5">
-            {idea.plans.map((plan) => (
+            {sortByLastModified(idea.plans).map((plan) => (
               <div key={plan.id}>
-                <div className="flex items-center justify-between gap-3">
+                <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
                   <p className="text-sm font-medium text-foreground">{plan.title}</p>
-                  {plan.steps.length > 0 && (
-                    <span className="text-xs text-muted tabular-nums">
-                      {plan.steps.filter((s) => s.completed).length} / {plan.steps.length}
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs text-muted">
+                      Modified {formatRelativeModified(plan.updatedAt)}
                     </span>
-                  )}
+                    {plan.steps.length > 0 && (
+                      <span className="text-xs text-muted tabular-nums">
+                        {plan.steps.filter((s) => s.completed).length} / {plan.steps.length}
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <div className="mt-2 flex flex-col gap-1 pl-1">
                   {plan.steps.length === 0 ? (
