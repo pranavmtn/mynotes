@@ -43,6 +43,12 @@ export function planTimelineSelectionProgress(plan: {
   return Math.round((selected / plan.steps.length) * 100);
 }
 
+export function totalPlanProgress(idea: { plans: { steps: { completed: boolean }[] }[] }): number {
+  if (idea.plans.length === 0) return 0;
+  const total = idea.plans.reduce((sum, plan) => sum + planProgress(plan), 0);
+  return Math.round(total / idea.plans.length);
+}
+
 export function ideaProgress(idea: Idea): number {
   const allSteps = idea.plans.flatMap((p) => p.steps);
   if (allSteps.length === 0) return 0;

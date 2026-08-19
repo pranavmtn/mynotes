@@ -10,8 +10,8 @@ import type { Idea } from "@/lib/types";
 import {
   ideaProgress,
   planProgress,
-  planTimelineSelectionProgress,
   sortByLastModified,
+  totalPlanProgress,
 } from "@/lib/utils";
 
 export function IdeaDetail({
@@ -95,7 +95,10 @@ export function IdeaDetail({
         />
         <h1 className="text-lg font-medium text-foreground">{idea.title}</h1>
       </div>
-      <ProgressIndicator percent={ideaProgress(idea)} color={idea.color} />
+      <div className="flex items-center justify-between gap-2">
+        <ProgressIndicator percent={ideaProgress(idea)} color={idea.color} />
+        <ProgressIndicator percent={totalPlanProgress(idea)} color="#000000" />
+      </div>
 
       <div className="flex flex-col gap-1">
         <p className="text-xs font-medium tracking-wide text-muted">CORE</p>
@@ -141,7 +144,6 @@ export function IdeaDetail({
         <div className="flex flex-col gap-2">
           {sortedPlans.map((plan) => {
             const expanded = expandedPlanId === plan.id;
-            const progress = planTimelineSelectionProgress(plan);
             return (
               <div
                 key={plan.id}
@@ -192,7 +194,8 @@ export function IdeaDetail({
                   </div>
                   <div className="flex shrink-0 flex-wrap items-center gap-3">
                     <span className="text-xs text-muted tabular-nums">
-                      {plan.steps.filter((s) => s.inTimeline).length} / {plan.steps.length}
+                      {planProgress(plan)}% · {plan.steps.filter((s) => s.inTimeline).length} /{" "}
+                      {plan.steps.length}
                     </span>
                     {confirmingDeletePlanId === plan.id ? (
                       <div className="flex items-center gap-2 text-xs">
@@ -223,18 +226,6 @@ export function IdeaDetail({
                     )}
                   </div>
                 </div>
-                {plan.steps.length > 0 && (
-                  <div className="flex flex-col gap-2 px-4 pb-3">
-                    <div className="flex flex-col gap-1">
-                      <span className="text-[10px] text-muted">In timeline</span>
-                      <ProgressIndicator percent={progress} />
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <span className="text-[10px] text-muted">Plan progress</span>
-                      <ProgressIndicator percent={planProgress(plan)} color="#000000" />
-                    </div>
-                  </div>
-                )}
                 {expanded && (
                   <PlanDetail
                     plan={plan}
