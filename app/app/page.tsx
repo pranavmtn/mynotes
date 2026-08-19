@@ -104,7 +104,6 @@ function AppContent() {
             onSetStepDates={(ideaId, planId, stepId, start, end) =>
               updateStep(ideaId, planId, stepId, { startDate: start, endDate: end })
             }
-            onDeleteStep={deleteStep}
           />
         )}
       </main>

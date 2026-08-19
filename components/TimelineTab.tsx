@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Calendar, Check, Trash2 } from "lucide-react";
+import { ArrowRight, Calendar, Check } from "lucide-react";
 import { useRef, useState } from "react";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { ModifiedLabel } from "@/components/ModifiedLabel";
@@ -21,7 +21,6 @@ export function TimelineTab({
   focusedIdeaTitle,
   onToggleStep,
   onSetStepDates,
-  onDeleteStep,
 }: {
   ideas: Idea[];
   focusedIdeaTitle?: string;
@@ -33,7 +32,6 @@ export function TimelineTab({
     start: string,
     end: string
   ) => void;
-  onDeleteStep: (ideaId: string, planId: string, stepId: string) => void;
 }) {
   const [openPickerStepId, setOpenPickerStepId] = useState<string | null>(null);
   const [tooltipStepId, setTooltipStepId] = useState<string | null>(null);
@@ -235,14 +233,6 @@ export function TimelineTab({
                                 />
                               )}
                             </div>
-                            <button
-                              type="button"
-                              aria-label="Delete step"
-                              onClick={() => onDeleteStep(idea.id, plan.id, step.id)}
-                              className="shrink-0 text-muted transition-colors hover:text-foreground cursor-pointer"
-                            >
-                              <Trash2 size={13} />
-                            </button>
                           </div>
                         ))
                       )}
