@@ -96,34 +96,37 @@ export function IdeaDetail({
       </div>
       <ProgressIndicator percent={ideaProgress(idea)} color={idea.color} />
 
-      {editingDescription ? (
-        <textarea
-          autoFocus
-          value={descriptionDraft}
-          onChange={(e) => setDescriptionDraft(e.target.value)}
-          onBlur={commitDescription}
-          placeholder="Explain this idea, your thoughts, everything here"
-          rows={3}
-          className="w-full resize-none rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-foreground/40"
-        />
-      ) : (
-        <button
-          type="button"
-          onClick={() => {
-            setDescriptionDraft(idea.description ?? "");
-            setEditingDescription(true);
-          }}
-          className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-left text-sm cursor-text"
-        >
-          {idea.description ? (
-            <span className="whitespace-pre-wrap text-foreground">{idea.description}</span>
-          ) : (
-            <span className="text-muted">
-              Explain this idea, your thoughts, everything here
-            </span>
-          )}
-        </button>
-      )}
+      <div className="flex flex-col gap-1">
+        <p className="text-xs font-medium tracking-wide text-muted">CORE</p>
+        {editingDescription ? (
+          <textarea
+            autoFocus
+            value={descriptionDraft}
+            onChange={(e) => setDescriptionDraft(e.target.value)}
+            onBlur={commitDescription}
+            placeholder="Explain this idea, your thoughts, everything here"
+            rows={3}
+            className="w-full resize-none rounded-lg border border-border px-3 py-2 text-xs text-foreground placeholder:text-muted focus:outline-none focus:border-foreground/40"
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => {
+              setDescriptionDraft(idea.description ?? "");
+              setEditingDescription(true);
+            }}
+            className="w-full rounded-lg px-3 py-2 text-left text-xs cursor-text"
+          >
+            {idea.description ? (
+              <span className="whitespace-pre-wrap text-foreground">{idea.description}</span>
+            ) : (
+              <span className="text-muted">
+                Explain this idea, your thoughts, everything here
+              </span>
+            )}
+          </button>
+        )}
+      </div>
 
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
