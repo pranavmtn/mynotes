@@ -57,9 +57,13 @@ export function formatRelativeModified(iso: string): string {
   const dayDiff = Math.round(
     (startOfDay(now).getTime() - startOfDay(date).getTime()) / 86400000
   );
-  if (dayDiff === 0) return "today";
-  if (dayDiff === 1) return "yesterday";
+  if (dayDiff === 0) return "-0d";
+  if (dayDiff === 1) return "-1d";
   return formatDate(iso);
+}
+
+export function isRelativeDayFormat(text: string): boolean {
+  return /^-\d+d$/.test(text);
 }
 
 export function sortByLastModified<T extends { updatedAt: string }>(items: T[]): T[] {

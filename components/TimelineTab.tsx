@@ -3,11 +3,11 @@
 import { ArrowRight, Calendar, Check } from "lucide-react";
 import { useRef, useState } from "react";
 import { DateRangePicker } from "@/components/DateRangePicker";
+import { ModifiedLabel } from "@/components/ModifiedLabel";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { TimelineAxis } from "@/components/TimelineAxis";
 import type { Idea } from "@/lib/types";
 import {
-  formatRelativeModified,
   formatShortDate,
   getIdeaDateRange,
   getPlanDateRange,
@@ -136,9 +136,7 @@ export function TimelineTab({
                             {formatShortDate(planRange.start)} → {formatShortDate(planRange.end)}
                           </span>
                         )}
-                        <span className="text-xs text-muted">
-                          Modified {formatRelativeModified(plan.updatedAt)}
-                        </span>
+                        <ModifiedLabel updatedAt={plan.updatedAt} />
                         {plan.steps.length > 0 && (
                           <span className="text-xs text-muted tabular-nums">
                             {plan.steps.filter((s) => s.completed).length} / {plan.steps.length}

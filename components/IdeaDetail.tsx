@@ -3,15 +3,11 @@
 import { ArrowLeft, ChevronDown, Plus, Trash2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { KillIdeaModal } from "@/components/KillIdeaModal";
+import { ModifiedLabel } from "@/components/ModifiedLabel";
 import { PlanDetail } from "@/components/PlanDetail";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import type { Idea } from "@/lib/types";
-import {
-  formatRelativeModified,
-  ideaProgress,
-  planProgress,
-  sortByLastModified,
-} from "@/lib/utils";
+import { ideaProgress, planProgress, sortByLastModified } from "@/lib/utils";
 
 export function IdeaDetail({
   idea,
@@ -149,9 +145,7 @@ export function IdeaDetail({
                     )}
                   </div>
                   <div className="flex shrink-0 flex-wrap items-center gap-3">
-                    <span className="text-xs text-muted">
-                      Modified {formatRelativeModified(plan.updatedAt)}
-                    </span>
+                    <ModifiedLabel updatedAt={plan.updatedAt} />
                     <span className="text-xs text-muted tabular-nums">
                       {plan.steps.filter((s) => s.completed).length} / {plan.steps.length}
                     </span>
