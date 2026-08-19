@@ -1,4 +1,4 @@
-import type { Idea, Plan } from "./types";
+import type { Idea, Plan, Step } from "./types";
 
 export const ideaColors = [
   "#7C8DA6",
@@ -88,8 +88,10 @@ export function formatShortDate(iso: string): string {
   return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
-export function getPlanDateRange(plan: Plan): { start: string; end: string } | null {
-  const dated = plan.steps.filter(
+export function getDateRangeFromSteps(
+  steps: Step[]
+): { start: string; end: string } | null {
+  const dated = steps.filter(
     (s): s is typeof s & { startDate: string; endDate: string } =>
       Boolean(s.startDate) && Boolean(s.endDate)
   );
@@ -97,4 +99,12 @@ export function getPlanDateRange(plan: Plan): { start: string; end: string } | n
   const start = dated.map((s) => s.startDate).reduce((a, b) => (a < b ? a : b));
   const end = dated.map((s) => s.endDate).reduce((a, b) => (a > b ? a : b));
   return { start, end };
+}
+
+export function getPlanDateRange(plan: Plan): { start: string; end: string } | null {
+  return getDateRangeFromSteps(plan.steps);
+}
+
+export function getIdeaDateRange(idea: Idea): { start: string; end: string } | null {
+  return getDateRangeFromSteps(idea.plans.flatMap((p) => p.steps));
 }
