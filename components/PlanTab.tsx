@@ -14,7 +14,6 @@ export function PlanTab({
   onUpdatePlanNotes,
   onDeletePlan,
   onAddStep,
-  onToggleStep,
   onUpdateStepText,
   onDeleteStep,
 }: {
@@ -26,7 +25,6 @@ export function PlanTab({
   onUpdatePlanNotes: (ideaId: string, planId: string, notes: string) => void;
   onDeletePlan: (ideaId: string, planId: string) => void;
   onAddStep: (ideaId: string, planId: string, text: string) => void;
-  onToggleStep: (ideaId: string, planId: string, stepId: string) => void;
   onUpdateStepText: (ideaId: string, planId: string, stepId: string, text: string) => void;
   onDeleteStep: (ideaId: string, planId: string, stepId: string) => void;
 }) {
@@ -47,7 +45,6 @@ export function PlanTab({
         onUpdatePlanNotes={(planId, notes) => onUpdatePlanNotes(openIdea.id, planId, notes)}
         onDeletePlan={(planId) => onDeletePlan(openIdea.id, planId)}
         onAddStep={(planId, text) => onAddStep(openIdea.id, planId, text)}
-        onToggleStep={(planId, stepId) => onToggleStep(openIdea.id, planId, stepId)}
         onUpdateStepText={(planId, stepId, text) =>
           onUpdateStepText(openIdea.id, planId, stepId, text)
         }

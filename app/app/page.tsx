@@ -86,12 +86,6 @@ function AppContent() {
             }
             onDeletePlan={deletePlan}
             onAddStep={addStep}
-            onToggleStep={(ideaId, planId, stepId) => {
-              const idea = ideas.find((i) => i.id === ideaId);
-              const plan = idea?.plans.find((p) => p.id === planId);
-              const step = plan?.steps.find((s) => s.id === stepId);
-              if (step) updateStep(ideaId, planId, stepId, { completed: !step.completed });
-            }}
             onUpdateStepText={(ideaId, planId, stepId, text) =>
               updateStep(ideaId, planId, stepId, { text })
             }
@@ -110,6 +104,7 @@ function AppContent() {
             onSetStepDates={(ideaId, planId, stepId, start, end) =>
               updateStep(ideaId, planId, stepId, { startDate: start, endDate: end })
             }
+            onDeleteStep={deleteStep}
           />
         )}
       </main>

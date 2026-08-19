@@ -55,7 +55,9 @@ export function formatRelativeModified(iso: string): string {
     0,
     Math.round((startOfDay(now).getTime() - startOfDay(date).getTime()) / 86400000)
   );
-  return `${dayDiff}d`;
+  if (dayDiff === 0) return "changed today";
+  if (dayDiff === 1) return "changed 1 day ago";
+  return `changed ${dayDiff} days ago`;
 }
 
 export function sortByLastModified<T extends { updatedAt: string }>(items: T[]): T[] {

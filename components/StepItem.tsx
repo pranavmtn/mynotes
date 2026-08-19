@@ -6,12 +6,10 @@ import type { Step } from "@/lib/types";
 
 export function StepItem({
   step,
-  onToggle,
   onUpdateText,
   onDelete,
 }: {
   step: Step;
-  onToggle: () => void;
   onUpdateText: (text: string) => void;
   onDelete: () => void;
 }) {
@@ -30,19 +28,16 @@ export function StepItem({
 
   return (
     <div className="group flex items-center gap-3 py-1.5">
-      <button
-        type="button"
-        onClick={onToggle}
-        aria-label={step.completed ? "Mark step incomplete" : "Mark step complete"}
-        aria-pressed={step.completed}
-        className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition-colors cursor-pointer ${
+      <span
+        aria-hidden
+        className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border ${
           step.completed
             ? "border-foreground/40 bg-foreground/10 text-foreground"
             : "border-border text-transparent"
         }`}
       >
         <Check size={10} strokeWidth={3} />
-      </button>
+      </span>
       {editing ? (
         <input
           autoFocus

@@ -18,7 +18,6 @@ export function IdeaDetail({
   onUpdatePlanNotes,
   onDeletePlan,
   onAddStep,
-  onToggleStep,
   onUpdateStepText,
   onDeleteStep,
 }: {
@@ -30,7 +29,6 @@ export function IdeaDetail({
   onUpdatePlanNotes: (planId: string, notes: string) => void;
   onDeletePlan: (planId: string) => void;
   onAddStep: (planId: string, text: string) => void;
-  onToggleStep: (planId: string, stepId: string) => void;
   onUpdateStepText: (planId: string, stepId: string, text: string) => void;
   onDeleteStep: (planId: string, stepId: string) => void;
 }) {
@@ -99,7 +97,7 @@ export function IdeaDetail({
             return (
               <div
                 key={plan.id}
-                className="rounded-xl border border-border bg-surface transition-colors"
+                className="relative rounded-xl border border-border bg-surface pb-4 transition-colors"
               >
                 <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
                   <div className="flex min-w-0 flex-1 items-center gap-2">
@@ -145,7 +143,6 @@ export function IdeaDetail({
                     )}
                   </div>
                   <div className="flex shrink-0 flex-wrap items-center gap-3">
-                    <ModifiedLabel updatedAt={plan.updatedAt} />
                     <span className="text-xs text-muted tabular-nums">
                       {plan.steps.filter((s) => s.completed).length} / {plan.steps.length}
                     </span>
@@ -188,13 +185,15 @@ export function IdeaDetail({
                     plan={plan}
                     onUpdateNotes={(notes) => onUpdatePlanNotes(plan.id, notes)}
                     onAddStep={(text) => onAddStep(plan.id, text)}
-                    onToggleStep={(stepId) => onToggleStep(plan.id, stepId)}
                     onUpdateStepText={(stepId, text) =>
                       onUpdateStepText(plan.id, stepId, text)
                     }
                     onDeleteStep={(stepId) => onDeleteStep(plan.id, stepId)}
                   />
                 )}
+                <div className="absolute bottom-1 right-3">
+                  <ModifiedLabel updatedAt={plan.updatedAt} />
+                </div>
               </div>
             );
           })}

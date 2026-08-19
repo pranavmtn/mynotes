@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Calendar, Check } from "lucide-react";
+import { ArrowRight, Calendar, Check, Trash2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { ModifiedLabel } from "@/components/ModifiedLabel";
@@ -21,6 +21,7 @@ export function TimelineTab({
   focusedIdeaTitle,
   onToggleStep,
   onSetStepDates,
+  onDeleteStep,
 }: {
   ideas: Idea[];
   focusedIdeaTitle?: string;
@@ -32,6 +33,7 @@ export function TimelineTab({
     start: string,
     end: string
   ) => void;
+  onDeleteStep: (ideaId: string, planId: string, stepId: string) => void;
 }) {
   const [openPickerStepId, setOpenPickerStepId] = useState<string | null>(null);
   const [tooltipStepId, setTooltipStepId] = useState<string | null>(null);
@@ -125,7 +127,7 @@ export function TimelineTab({
                 return (
                   <div
                     key={plan.id}
-                    className={planRange ? "border-l-2 pl-3" : ""}
+                    className={`relative pb-4 ${planRange ? "border-l-2 pl-3" : ""}`}
                     style={planRange ? { borderColor: idea.color } : undefined}
                   >
                     <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
@@ -136,7 +138,6 @@ export function TimelineTab({
                             {formatShortDate(planRange.start)} → {formatShortDate(planRange.end)}
                           </span>
                         )}
-                        <ModifiedLabel updatedAt={plan.updatedAt} />
                         {plan.steps.length > 0 && (
                           <span className="text-xs text-muted tabular-nums">
                             {plan.steps.filter((s) => s.completed).length} / {plan.steps.length}
@@ -220,6 +221,14 @@ export function TimelineTab({
                                 />
                               )}
                             </div>
+                            <button
+                              type="button"
+                              aria-label="Delete step"
+                              onClick={() => onDeleteStep(idea.id, plan.id, step.id)}
+                              className="shrink-0 text-muted transition-colors hover:text-foreground cursor-pointer"
+                            >
+                              <Trash2 size={13} />
+                            </button>
                           </div>
                         ))
                       )}
@@ -229,6 +238,9 @@ export function TimelineTab({
                         <ProgressIndicator percent={planProgress(plan)} />
                       </div>
                     )}
+                    <div className="absolute bottom-1 right-1">
+                      <ModifiedLabel updatedAt={plan.updatedAt} />
+                    </div>
                   </div>
                 );
               })}
