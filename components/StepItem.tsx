@@ -33,9 +33,21 @@ export function StepItem({
       <button
         type="button"
         onClick={onToggleInTimeline}
-        aria-label={step.inTimeline ? "Remove from timeline" : "Add to timeline"}
+        disabled={step.completed}
+        aria-label={
+          step.completed
+            ? "Uncomplete in Timeline to change this"
+            : step.inTimeline
+              ? "Remove from timeline"
+              : "Add to timeline"
+        }
+        title={step.completed ? "Uncomplete in Timeline to change this" : undefined}
         aria-pressed={step.inTimeline}
-        className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition-colors cursor-pointer ${
+        className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition-colors ${
+          step.completed
+            ? "cursor-not-allowed opacity-60"
+            : "cursor-pointer"
+        } ${
           step.inTimeline
             ? "border-foreground/40 bg-foreground/10 text-foreground"
             : "border-border text-transparent"

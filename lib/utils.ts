@@ -32,6 +32,17 @@ export function planProgress(plan: { steps: { completed: boolean }[] }): number 
   return Math.round((completed / plan.steps.length) * 100);
 }
 
+// In the Plan tab, a step is "done" once it's been handed off to the
+// Timeline (marked inTimeline) -- not once it's completed, since
+// completion only happens in Timeline itself.
+export function planTimelineSelectionProgress(plan: {
+  steps: { inTimeline?: boolean }[];
+}): number {
+  if (plan.steps.length === 0) return 0;
+  const selected = plan.steps.filter((s) => s.inTimeline).length;
+  return Math.round((selected / plan.steps.length) * 100);
+}
+
 export function ideaProgress(idea: Idea): number {
   const allSteps = idea.plans.flatMap((p) => p.steps);
   if (allSteps.length === 0) return 0;
