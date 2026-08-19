@@ -142,7 +142,9 @@ export function useIdeas() {
       ideaId: string,
       planId: string,
       stepId: string,
-      updates: Partial<Pick<Step, "text" | "completed" | "startDate" | "endDate">>
+      updates: Partial<
+        Pick<Step, "text" | "completed" | "startDate" | "endDate" | "inTimeline">
+      >
     ) => {
       setIdeas((prev) =>
         prev.map((idea) => {

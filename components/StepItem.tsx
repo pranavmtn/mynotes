@@ -6,10 +6,12 @@ import type { Step } from "@/lib/types";
 
 export function StepItem({
   step,
+  onToggleInTimeline,
   onUpdateText,
   onDelete,
 }: {
   step: Step;
+  onToggleInTimeline: () => void;
   onUpdateText: (text: string) => void;
   onDelete: () => void;
 }) {
@@ -28,16 +30,19 @@ export function StepItem({
 
   return (
     <div className="group flex items-center gap-3 py-1.5">
-      <span
-        aria-hidden
-        className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border ${
-          step.completed
+      <button
+        type="button"
+        onClick={onToggleInTimeline}
+        aria-label={step.inTimeline ? "Remove from timeline" : "Add to timeline"}
+        aria-pressed={step.inTimeline}
+        className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition-colors cursor-pointer ${
+          step.inTimeline
             ? "border-foreground/40 bg-foreground/10 text-foreground"
             : "border-border text-transparent"
         }`}
       >
         <Check size={10} strokeWidth={3} />
-      </span>
+      </button>
       {editing ? (
         <input
           autoFocus
@@ -71,7 +76,7 @@ export function StepItem({
         type="button"
         aria-label="Delete step"
         onClick={onDelete}
-        className="text-muted opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100 cursor-pointer"
+        className="text-muted opacity-100 transition-opacity hover:text-foreground cursor-pointer sm:opacity-0 sm:group-hover:opacity-100"
       >
         <Trash2 size={12} />
       </button>

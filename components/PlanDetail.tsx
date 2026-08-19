@@ -7,12 +7,14 @@ export function PlanDetail({
   plan,
   onUpdateNotes,
   onAddStep,
+  onToggleStepInTimeline,
   onUpdateStepText,
   onDeleteStep,
 }: {
   plan: Plan;
   onUpdateNotes: (notes: string) => void;
   onAddStep: (text: string) => void;
+  onToggleStepInTimeline: (stepId: string) => void;
   onUpdateStepText: (stepId: string, text: string) => void;
   onDeleteStep: (stepId: string) => void;
 }) {
@@ -34,6 +36,7 @@ export function PlanDetail({
         <StepList
           steps={plan.steps}
           onAdd={onAddStep}
+          onToggleInTimeline={onToggleStepInTimeline}
           onUpdateText={onUpdateStepText}
           onDelete={onDeleteStep}
         />

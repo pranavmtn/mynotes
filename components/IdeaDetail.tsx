@@ -18,6 +18,7 @@ export function IdeaDetail({
   onUpdatePlanNotes,
   onDeletePlan,
   onAddStep,
+  onToggleStepInTimeline,
   onUpdateStepText,
   onDeleteStep,
 }: {
@@ -29,6 +30,7 @@ export function IdeaDetail({
   onUpdatePlanNotes: (planId: string, notes: string) => void;
   onDeletePlan: (planId: string) => void;
   onAddStep: (planId: string, text: string) => void;
+  onToggleStepInTimeline: (planId: string, stepId: string) => void;
   onUpdateStepText: (planId: string, stepId: string, text: string) => void;
   onDeleteStep: (planId: string, stepId: string) => void;
 }) {
@@ -185,6 +187,9 @@ export function IdeaDetail({
                     plan={plan}
                     onUpdateNotes={(notes) => onUpdatePlanNotes(plan.id, notes)}
                     onAddStep={(text) => onAddStep(plan.id, text)}
+                    onToggleStepInTimeline={(stepId) =>
+                      onToggleStepInTimeline(plan.id, stepId)
+                    }
                     onUpdateStepText={(stepId, text) =>
                       onUpdateStepText(plan.id, stepId, text)
                     }

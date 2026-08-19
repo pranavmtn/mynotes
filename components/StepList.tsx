@@ -8,11 +8,13 @@ import type { Step } from "@/lib/types";
 export function StepList({
   steps,
   onAdd,
+  onToggleInTimeline,
   onUpdateText,
   onDelete,
 }: {
   steps: Step[];
   onAdd: (text: string) => void;
+  onToggleInTimeline: (stepId: string) => void;
   onUpdateText: (stepId: string, text: string) => void;
   onDelete: (stepId: string) => void;
 }) {
@@ -31,6 +33,7 @@ export function StepList({
         <StepItem
           key={step.id}
           step={step}
+          onToggleInTimeline={() => onToggleInTimeline(step.id)}
           onUpdateText={(text) => onUpdateText(step.id, text)}
           onDelete={() => onDelete(step.id)}
         />

@@ -4,6 +4,7 @@ export type Step = {
   completed: boolean;
   startDate?: string;
   endDate?: string;
+  inTimeline?: boolean;
 };
 
 export type Plan = {

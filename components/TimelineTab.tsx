@@ -38,7 +38,19 @@ export function TimelineTab({
   const [tooltipStepId, setTooltipStepId] = useState<string | null>(null);
   const [highlightedStepId, setHighlightedStepId] = useState<string | null>(null);
   const stepRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const activeIdeas = ideas.filter((idea) => idea.plans.length > 0);
+
+  // Timeline only shows plans/ideas that have at least one step explicitly
+  // added to the timeline from the Plan tab -- everything else (including
+  // progress, date ranges, and axis ticks below) is derived from this
+  // filtered view, not the raw plan data.
+  const activeIdeas = ideas
+    .map((idea) => ({
+      ...idea,
+      plans: idea.plans
+        .map((plan) => ({ ...plan, steps: plan.steps.filter((s) => s.inTimeline) }))
+        .filter((plan) => plan.steps.length > 0),
+    }))
+    .filter((idea) => idea.plans.length > 0);
 
   function handleToggleClick(ideaId: string, planId: string, step: { id: string; startDate?: string; endDate?: string }) {
     if (!step.startDate || !step.endDate) {
@@ -139,20 +151,15 @@ export function TimelineTab({
                             {formatShortDate(planRange.start)} → {formatShortDate(planRange.end)}
                           </span>
                         )}
-                        {plan.steps.length > 0 && (
-                          <span className="text-xs text-muted tabular-nums">
-                            {plan.steps.filter((s) => s.completed).length} / {plan.steps.length}
-                          </span>
-                        )}
+                        <span className="text-xs text-muted tabular-nums">
+                          {plan.steps.filter((s) => s.completed).length} / {plan.steps.length}
+                        </span>
                       </div>
                     </div>
                     <div className="mt-2 flex flex-col gap-1 pl-1">
-                      {plan.steps.length === 0 ? (
-                        <p className="text-xs text-muted">No steps yet.</p>
-                      ) : (
-                        plan.steps.map((step) => (
-                          <div
-                            key={step.id}
+                      {plan.steps.map((step) => (
+                        <div
+                          key={step.id}
                             ref={(el) => {
                               stepRefs.current[step.id] = el;
                             }}
@@ -237,14 +244,11 @@ export function TimelineTab({
                               )}
                             </div>
                           </div>
-                        ))
-                      )}
+                      ))}
                     </div>
-                    {plan.steps.length > 0 && (
-                      <div className="mt-2 pl-1">
-                        <ProgressIndicator percent={planProgress(plan)} />
-                      </div>
-                    )}
+                    <div className="mt-2 pl-1">
+                      <ProgressIndicator percent={planProgress(plan)} />
+                    </div>
                     <div className="absolute bottom-1 right-1">
                       <ModifiedLabel updatedAt={plan.updatedAt} />
                     </div>
