@@ -38,6 +38,7 @@ function AppContent() {
     loaded,
     addIdea,
     updateIdeaTitle,
+    updateIdeaDescription,
     deleteIdea,
     addPlan,
     updatePlan,
@@ -77,6 +78,7 @@ function AppContent() {
             ideas={visibleIdeas}
             focusedIdeaTitle={focusedIdea?.title}
             onDeleteIdea={deleteIdea}
+            onUpdateIdeaDescription={updateIdeaDescription}
             onAddPlan={addPlan}
             onUpdatePlanTitle={(ideaId, planId, title) =>
               updatePlan(ideaId, planId, { title })

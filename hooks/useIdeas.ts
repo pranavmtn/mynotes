@@ -62,6 +62,17 @@ export function useIdeas() {
     );
   }, []);
 
+  const updateIdeaDescription = useCallback((ideaId: string, description: string) => {
+    const trimmed = description.trim();
+    setIdeas((prev) =>
+      prev.map((idea) =>
+        idea.id === ideaId
+          ? { ...idea, description: trimmed, updatedAt: nowISO() }
+          : idea
+      )
+    );
+  }, []);
+
   const deleteIdea = useCallback((ideaId: string) => {
     setIdeas((prev) => prev.filter((idea) => idea.id !== ideaId));
   }, []);
@@ -194,6 +205,7 @@ export function useIdeas() {
     loaded,
     addIdea,
     updateIdeaTitle,
+    updateIdeaDescription,
     deleteIdea,
     addPlan,
     updatePlan,

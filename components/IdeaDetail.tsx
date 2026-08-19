@@ -17,6 +17,7 @@ export function IdeaDetail({
   idea,
   onBack,
   onDeleteIdea,
+  onUpdateDescription,
   onAddPlan,
   onUpdatePlanTitle,
   onUpdatePlanNotes,
@@ -29,6 +30,7 @@ export function IdeaDetail({
   idea: Idea;
   onBack: () => void;
   onDeleteIdea: () => void;
+  onUpdateDescription: (description: string) => void;
   onAddPlan: (title: string) => void;
   onUpdatePlanTitle: (planId: string, title: string) => void;
   onUpdatePlanNotes: (planId: string, notes: string) => void;
@@ -45,7 +47,14 @@ export function IdeaDetail({
   const [editingPlanTitleId, setEditingPlanTitleId] = useState<string | null>(null);
   const [planTitleDraft, setPlanTitleDraft] = useState("");
   const [killModalOpen, setKillModalOpen] = useState(false);
+  const [editingDescription, setEditingDescription] = useState(false);
+  const [descriptionDraft, setDescriptionDraft] = useState(idea.description ?? "");
   const newPlanInputRef = useRef<HTMLInputElement>(null);
+
+  function commitDescription() {
+    setEditingDescription(false);
+    onUpdateDescription(descriptionDraft);
+  }
 
   const sortedPlans = sortByLastModified(idea.plans);
 
@@ -86,6 +95,35 @@ export function IdeaDetail({
         <h1 className="text-lg font-medium text-foreground">{idea.title}</h1>
       </div>
       <ProgressIndicator percent={ideaProgress(idea)} color={idea.color} />
+
+      {editingDescription ? (
+        <textarea
+          autoFocus
+          value={descriptionDraft}
+          onChange={(e) => setDescriptionDraft(e.target.value)}
+          onBlur={commitDescription}
+          placeholder="Explain this idea, your thoughts, everything here"
+          rows={3}
+          className="w-full resize-none rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-foreground/40"
+        />
+      ) : (
+        <button
+          type="button"
+          onClick={() => {
+            setDescriptionDraft(idea.description ?? "");
+            setEditingDescription(true);
+          }}
+          className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-left text-sm cursor-text"
+        >
+          {idea.description ? (
+            <span className="whitespace-pre-wrap text-foreground">{idea.description}</span>
+          ) : (
+            <span className="text-muted">
+              Explain this idea, your thoughts, everything here
+            </span>
+          )}
+        </button>
+      )}
 
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">

@@ -10,6 +10,7 @@ export function PlanTab({
   ideas,
   focusedIdeaTitle,
   onDeleteIdea,
+  onUpdateIdeaDescription,
   onAddPlan,
   onUpdatePlanTitle,
   onUpdatePlanNotes,
@@ -22,6 +23,7 @@ export function PlanTab({
   ideas: Idea[];
   focusedIdeaTitle?: string;
   onDeleteIdea: (ideaId: string) => void;
+  onUpdateIdeaDescription: (ideaId: string, description: string) => void;
   onAddPlan: (ideaId: string, title: string) => void;
   onUpdatePlanTitle: (ideaId: string, planId: string, title: string) => void;
   onUpdatePlanNotes: (ideaId: string, planId: string, notes: string) => void;
@@ -43,6 +45,9 @@ export function PlanTab({
           onDeleteIdea(openIdea.id);
           setOpenIdeaId(null);
         }}
+        onUpdateDescription={(description) =>
+          onUpdateIdeaDescription(openIdea.id, description)
+        }
         onAddPlan={(title) => onAddPlan(openIdea.id, title)}
         onUpdatePlanTitle={(planId, title) => onUpdatePlanTitle(openIdea.id, planId, title)}
         onUpdatePlanNotes={(planId, notes) => onUpdatePlanNotes(openIdea.id, planId, notes)}
