@@ -97,8 +97,8 @@ export function TimelineTab({
                   aria-hidden
                 />
                 <h2
-                  className={`text-base font-medium ${
-                    complete ? "text-muted line-through" : "text-foreground"
+                  className={`text-base text-foreground ${
+                    complete ? "font-semibold underline decoration-2 underline-offset-2" : "font-medium"
                   }`}
                 >
                   {idea.title}
@@ -199,17 +199,31 @@ export function TimelineTab({
                             <div className="relative shrink-0">
                               <button
                                 type="button"
-                                aria-label="Set step dates"
+                                aria-label={
+                                  step.completed
+                                    ? "Uncomplete the step to change its dates"
+                                    : "Set step dates"
+                                }
+                                title={
+                                  step.completed
+                                    ? "Uncomplete the step to change its dates"
+                                    : undefined
+                                }
+                                disabled={step.completed}
                                 onClick={() =>
                                   setOpenPickerStepId(
                                     openPickerStepId === step.id ? null : step.id
                                   )
                                 }
-                                className="text-muted transition-colors hover:text-foreground cursor-pointer"
+                                className={
+                                  step.completed
+                                    ? "text-muted opacity-40 cursor-not-allowed"
+                                    : "text-muted transition-colors hover:text-foreground cursor-pointer"
+                                }
                               >
                                 <Calendar size={13} />
                               </button>
-                              {openPickerStepId === step.id && (
+                              {!step.completed && openPickerStepId === step.id && (
                                 <DateRangePicker
                                   startDate={step.startDate}
                                   endDate={step.endDate}
