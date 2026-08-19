@@ -2,6 +2,8 @@ export type Step = {
   id: string;
   text: string;
   completed: boolean;
+  startDate?: string;
+  endDate?: string;
 };
 
 export type Plan = {

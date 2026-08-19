@@ -138,7 +138,12 @@ export function useIdeas() {
   }, []);
 
   const updateStep = useCallback(
-    (ideaId: string, planId: string, stepId: string, updates: Partial<Pick<Step, "text" | "completed">>) => {
+    (
+      ideaId: string,
+      planId: string,
+      stepId: string,
+      updates: Partial<Pick<Step, "text" | "completed" | "startDate" | "endDate">>
+    ) => {
       setIdeas((prev) =>
         prev.map((idea) => {
           if (idea.id !== ideaId) return idea;

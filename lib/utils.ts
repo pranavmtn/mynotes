@@ -1,4 +1,4 @@
-import type { Idea } from "./types";
+import type { Idea, Plan } from "./types";
 
 export const ideaColors = [
   "#7C8DA6",
@@ -81,4 +81,20 @@ export function colorForName(name: string): string {
     hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
   }
   return ideaColors[hash % ideaColors.length];
+}
+
+export function formatShortDate(iso: string): string {
+  const date = new Date(`${iso}T00:00:00`);
+  return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+}
+
+export function getPlanDateRange(plan: Plan): { start: string; end: string } | null {
+  const dated = plan.steps.filter(
+    (s): s is typeof s & { startDate: string; endDate: string } =>
+      Boolean(s.startDate) && Boolean(s.endDate)
+  );
+  if (dated.length === 0) return null;
+  const start = dated.map((s) => s.startDate).reduce((a, b) => (a < b ? a : b));
+  const end = dated.map((s) => s.endDate).reduce((a, b) => (a > b ? a : b));
+  return { start, end };
 }

@@ -6,10 +6,14 @@ import type { Idea } from "@/lib/types";
 
 export function IdeaTab({
   ideas,
+  selectedIdeaId,
+  onToggleSelect,
   onAdd,
   onUpdateTitle,
 }: {
   ideas: Idea[];
+  selectedIdeaId: string | null;
+  onToggleSelect: (ideaId: string) => void;
   onAdd: (title: string) => void;
   onUpdateTitle: (ideaId: string, title: string) => void;
 }) {
@@ -29,6 +33,8 @@ export function IdeaTab({
             <IdeaCard
               key={idea.id}
               idea={idea}
+              selected={idea.id === selectedIdeaId}
+              onToggleSelect={() => onToggleSelect(idea.id)}
               onUpdateTitle={(title) => onUpdateTitle(idea.id, title)}
             />
           ))}

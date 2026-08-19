@@ -7,6 +7,7 @@ import type { Idea } from "@/lib/types";
 
 export function PlanTab({
   ideas,
+  focusedIdeaTitle,
   onDeleteIdea,
   onAddPlan,
   onUpdatePlanTitle,
@@ -18,6 +19,7 @@ export function PlanTab({
   onDeleteStep,
 }: {
   ideas: Idea[];
+  focusedIdeaTitle?: string;
   onDeleteIdea: (ideaId: string) => void;
   onAddPlan: (ideaId: string, title: string) => void;
   onUpdatePlanTitle: (ideaId: string, planId: string, title: string) => void;
@@ -56,6 +58,11 @@ export function PlanTab({
 
   return (
     <div className="flex flex-col gap-2">
+      {focusedIdeaTitle && (
+        <p className="text-xs text-muted">
+          Focused on &ldquo;{focusedIdeaTitle}&rdquo; — click empty space to show all ideas.
+        </p>
+      )}
       {ideas.length === 0 ? (
         <div className="py-16 text-center">
           <p className="text-sm text-foreground">No ideas to plan yet.</p>
