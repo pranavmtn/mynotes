@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FocusHint } from "@/components/FocusHint";
 import { IdeaDetail } from "@/components/IdeaDetail";
 import { PlanCard } from "@/components/PlanCard";
 import type { Idea } from "@/lib/types";
@@ -55,11 +56,7 @@ export function PlanTab({
 
   return (
     <div className="flex flex-col gap-2">
-      {focusedIdeaTitle && (
-        <p className="text-xs text-muted">
-          Focused on &ldquo;{focusedIdeaTitle}&rdquo; — click empty space to show all ideas.
-        </p>
-      )}
+      {focusedIdeaTitle && <FocusHint key={focusedIdeaTitle} title={focusedIdeaTitle} />}
       {ideas.length === 0 ? (
         <div className="py-16 text-center">
           <p className="text-sm text-foreground">No ideas to plan yet.</p>

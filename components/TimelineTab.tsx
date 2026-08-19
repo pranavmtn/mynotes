@@ -3,6 +3,7 @@
 import { ArrowRight, Calendar, Check } from "lucide-react";
 import { useRef, useState } from "react";
 import { DateRangePicker } from "@/components/DateRangePicker";
+import { FocusHint } from "@/components/FocusHint";
 import { ModifiedLabel } from "@/components/ModifiedLabel";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { TimelineAxis } from "@/components/TimelineAxis";
@@ -69,9 +70,11 @@ export function TimelineTab({
   return (
     <div className="flex flex-col items-center gap-6">
       {focusedIdeaTitle && (
-        <p className="w-full max-w-[1100px] text-xs text-muted sm:w-4/5">
-          Focused on &ldquo;{focusedIdeaTitle}&rdquo; — click empty space to show all ideas.
-        </p>
+        <FocusHint
+          key={focusedIdeaTitle}
+          title={focusedIdeaTitle}
+          className="w-full max-w-[1100px] sm:w-4/5"
+        />
       )}
       {activeIdeas.map((idea) => {
         const progress = ideaProgress(idea);
