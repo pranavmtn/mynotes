@@ -17,6 +17,7 @@ export function StepItem({
 }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(step.text);
+  const locked = Boolean(step.inTimeline);
 
   function commitEdit() {
     setEditing(false);
@@ -73,20 +74,27 @@ export function StepItem({
           }}
           className="w-full bg-transparent text-sm text-foreground focus:outline-none"
         />
+      ) : locked ? (
+        <span
+          title="Remove from timeline to rename this task"
+          className={`flex-1 truncate text-sm ${
+            step.completed ? "text-muted line-through" : "text-foreground"
+          }`}
+        >
+          {step.text}
+        </span>
       ) : (
         <button
           type="button"
           onClick={() => setEditing(true)}
-          className={`flex-1 truncate text-left text-sm cursor-text ${
-            step.completed ? "text-muted line-through" : "text-foreground"
-          }`}
+          className="flex-1 truncate text-left text-sm text-foreground cursor-text"
         >
           {step.text}
         </button>
       )}
       <button
         type="button"
-        aria-label="Delete step"
+        aria-label="Delete task"
         onClick={onDelete}
         className="text-muted opacity-100 transition-opacity hover:text-foreground cursor-pointer sm:opacity-0 sm:group-hover:opacity-100"
       >

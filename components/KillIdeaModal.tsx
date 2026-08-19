@@ -28,7 +28,7 @@ export function KillIdeaModal({
         <p className="text-sm font-medium text-foreground">Kill this idea</p>
         <p className="mt-1.5 text-sm text-muted">
           This permanently deletes &ldquo;{ideaTitle}&rdquo; and every plan and
-          step under it. There&apos;s no undo.
+          task under it. There&apos;s no undo.
         </p>
         <p className="mt-4 text-xs text-muted">Type the phrase below to confirm:</p>
         <p className="mt-1 rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground">

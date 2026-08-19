@@ -9,6 +9,7 @@ import { ProgressIndicator } from "@/components/ProgressIndicator";
 import type { Idea } from "@/lib/types";
 import {
   ideaProgress,
+  planProgress,
   planTimelineSelectionProgress,
   sortByLastModified,
 } from "@/lib/utils";
@@ -223,8 +224,15 @@ export function IdeaDetail({
                   </div>
                 </div>
                 {plan.steps.length > 0 && (
-                  <div className="px-4 pb-2">
-                    <ProgressIndicator percent={progress} />
+                  <div className="flex flex-col gap-2 px-4 pb-3">
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[10px] text-muted">In timeline</span>
+                      <ProgressIndicator percent={progress} />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[10px] text-muted">Plan progress</span>
+                      <ProgressIndicator percent={planProgress(plan)} color="#000000" />
+                    </div>
                   </div>
                 )}
                 {expanded && (

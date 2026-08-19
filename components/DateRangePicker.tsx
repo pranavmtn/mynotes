@@ -24,11 +24,13 @@ function mondayFirstIndex(year: number, month: number): number {
 export function DateRangePicker({
   startDate,
   endDate,
+  disabledRanges = [],
   onSelect,
   onClose,
 }: {
   startDate?: string;
   endDate?: string;
+  disabledRanges?: { start: string; end: string }[];
   onSelect: (start: string, end: string) => void;
   onClose: () => void;
 }) {
@@ -38,6 +40,13 @@ export function DateRangePicker({
   const [rangeStart, setRangeStart] = useState<string | undefined>(startDate);
   const [rangeEnd, setRangeEnd] = useState<string | undefined>(endDate);
 
+  // A day already covered by another task's range is unselectable, except
+  // its exact end date -- that boundary is free for the next task to start
+  // on, so tasks can sit back-to-back without overlapping.
+  function isBlocked(iso: string) {
+    return disabledRanges.some((r) => iso >= r.start && iso < r.end);
+  }
+
   function goToMonth(delta: number) {
     const d = new Date(viewYear, viewMonth + delta, 1);
     setViewYear(d.getFullYear());
@@ -45,6 +54,7 @@ export function DateRangePicker({
   }
 
   function handleDayClick(iso: string) {
+    if (isBlocked(iso)) return;
     if (!rangeStart || (rangeStart && rangeEnd)) {
       setRangeStart(iso);
       setRangeEnd(undefined);
@@ -112,17 +122,22 @@ export function DateRangePicker({
             const isEnd = iso === rangeEnd;
             const inRange =
               rangeStart && rangeEnd && iso > rangeStart && iso < rangeEnd;
+            const blocked = isBlocked(iso);
             return (
               <button
                 key={iso}
                 type="button"
+                disabled={blocked}
+                title={blocked ? "Already scheduled by another task" : undefined}
                 onClick={() => handleDayClick(iso)}
-                className={`mx-auto flex h-7 w-7 items-center justify-center rounded-full transition-colors cursor-pointer ${
-                  isStart || isEnd
-                    ? "bg-foreground text-background"
-                    : inRange
-                      ? "bg-border text-foreground"
-                      : "text-foreground hover:bg-background"
+                className={`mx-auto flex h-7 w-7 items-center justify-center rounded-full transition-colors ${
+                  blocked
+                    ? "cursor-not-allowed text-muted/40 line-through"
+                    : isStart || isEnd
+                      ? "cursor-pointer bg-foreground text-background"
+                      : inRange
+                        ? "cursor-pointer bg-border text-foreground"
+                        : "cursor-pointer text-foreground hover:bg-background"
                 }`}
               >
                 {dayNum}

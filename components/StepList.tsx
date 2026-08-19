@@ -49,8 +49,8 @@ export function StepList({
               handleSubmit();
             }
           }}
-          placeholder="Add step..."
-          aria-label="Add step"
+          placeholder="Add task..."
+          aria-label="Add task"
           className="w-full bg-transparent text-sm text-foreground placeholder:text-muted focus:outline-none"
         />
       </div>

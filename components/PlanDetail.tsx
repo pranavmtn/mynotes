@@ -32,7 +32,7 @@ export function PlanDetail({
       </div>
 
       <div>
-        <p className="mb-1 text-xs text-muted">Steps</p>
+        <p className="mb-1 text-xs text-muted">Tasks</p>
         <StepList
           steps={plan.steps}
           onAdd={onAddStep}

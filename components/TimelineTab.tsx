@@ -74,7 +74,7 @@ export function TimelineTab({
   if (activeIdeas.length === 0) {
     return (
       <div className="py-16 text-center">
-        <p className="text-sm text-foreground">No active ideas yet.</p>
+        <p className="text-sm text-foreground">No timeline in the space yet.</p>
       </div>
     );
   }
@@ -92,10 +92,12 @@ export function TimelineTab({
         const progress = ideaProgress(idea);
         const complete = progress === 100;
         const ideaRange = getIdeaDateRange(idea);
-        const ticks = idea.plans
-          .flatMap((p) => p.steps)
-          .filter((s) => s.startDate)
-          .map((s) => ({ id: s.id, date: s.startDate as string }));
+        const datedSteps = idea.plans.flatMap((p) => p.steps).filter((s) => s.startDate && s.endDate);
+        const ticks = datedSteps.map((s) => ({
+          id: s.id,
+          start: s.startDate as string,
+          end: s.endDate as string,
+        }));
 
         const card = (
           <div
@@ -209,12 +211,12 @@ export function TimelineTab({
                                 type="button"
                                 aria-label={
                                   step.completed
-                                    ? "Uncomplete the step to change its dates"
-                                    : "Set step dates"
+                                    ? "Uncomplete the task to change its dates"
+                                    : "Set task dates"
                                 }
                                 title={
                                   step.completed
-                                    ? "Uncomplete the step to change its dates"
+                                    ? "Uncomplete the task to change its dates"
                                     : undefined
                                 }
                                 disabled={step.completed}
@@ -235,6 +237,12 @@ export function TimelineTab({
                                 <DateRangePicker
                                   startDate={step.startDate}
                                   endDate={step.endDate}
+                                  disabledRanges={datedSteps
+                                    .filter((s) => s.id !== step.id)
+                                    .map((s) => ({
+                                      start: s.startDate as string,
+                                      end: s.endDate as string,
+                                    }))}
                                   onSelect={(start, end) => {
                                     onSetStepDates(idea.id, plan.id, step.id, start, end);
                                     setOpenPickerStepId(null);

@@ -59,7 +59,9 @@ function AppContent() {
       <main
         className="mx-auto w-full max-w-3xl flex-1 px-6 py-8 sm:px-8"
         onClick={(e) => {
-          if (e.target === e.currentTarget && selectedIdeaId) setSelectedIdeaId(null);
+          if (tab === "idea" && e.target === e.currentTarget && selectedIdeaId) {
+            setSelectedIdeaId(null);
+          }
         }}
       >
         <WelcomeMessage />
